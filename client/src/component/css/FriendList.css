@@ -1,0 +1,22 @@
+.FriendList-wrapr {
+  width: 30%;
+  height: 100vh;
+  overflow-y: auto;
+}
+.FriendList-header {
+  height: 33px;
+  padding: 8px;
+  border-bottom: 1px solid #d3d3d3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #303f9f;
+}
+.FriendList-container {
+}
+/*  flex y message u FriendList  */
+.flex-main {
+  display: flex;
+}
