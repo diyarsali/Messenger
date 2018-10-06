@@ -1,6 +1,6 @@
 # Getting started
 
-## installation 
+## Installation 
 
 In root directory run ``` npm install ``` <br/>
 In client directory run ```npm install ``` as well 
