@@ -57,9 +57,8 @@ class ScrollDialog extends React.Component {
       .post("/friend/requestUser", {
         requestUser: requestUser
       })
-      .then(res => {
-        this.setState(this.state.users.splice(index, 1));
-      });
+      .then(res => {});
+    this.setState(this.state.users.splice(index, 1));
   };
 
   ConfirmFriendHandler = (confirmName, index) => {
@@ -68,7 +67,7 @@ class ScrollDialog extends React.Component {
         confirmName: confirmName
       })
       .then(res => {});
-    this.setState(this.state.requestUser.splice(index, 1));
+    this.setState(this.state.requestUser[0].request.splice(index, 1));
   };
   RemoveFriendHandler = (friend, index) => {
     axios
@@ -76,7 +75,7 @@ class ScrollDialog extends React.Component {
         friend: friend
       })
       .then(res => {});
-    this.setState(this.state.friendsUser.splice(index, 1));
+    this.setState(this.state.friendsUser[0].friends.splice(index, 1));
   };
 
   render() {

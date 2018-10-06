@@ -52,13 +52,17 @@ class FullWidthTabs extends React.Component {
         return (
           <div key={i} className="Friends wrapper">
             <div className="FriendRequest User-box">
-              <div className="FriendName Title">{user} </div>
+              <div className="FriendName Title">
+                {requestUser[0].request[i]}{" "}
+              </div>
               <Button
                 size="small"
                 variant="outlined"
                 color="primary"
                 className={classes.button}
-                onClick={() => this.props.ConfirmFriendHandler(user, i)}
+                onClick={() =>
+                  this.props.ConfirmFriendHandler(requestUser[0].request[i], i)
+                }
               >
                 Confirm
               </Button>

@@ -76,40 +76,18 @@ router.get("/logout", (req, res) => {
   res.send("logout");
 });
 
-// // send userRegistered
+// send userRegistered
 // router.get("/", (req, res) => {
 //   let userAuth = req.user.username;
-//   Friend.findOne({ user: userAuth }, { _id: 0, friends: 1 }, (err, friends) => {
-//     if (friends) {
-//       User.find(
-//         { username: { $ne: userAuth, $nin: friends.friends } },
-//         { _id: 0, name: 1, username: 1 },
-//         (err, user) => {
-//           res.send(user);
-//         }
-//       );
+//   User.find(
+//     { username: { $ne: userAuth } },
+//     { _id: 0, name: 1, username: 1 },
+//     (err, user) => {
+//       res.send(user);
 //     }
-//     User.find(
-//       { username: { $ne: userAuth } },
-//       { _id: 0, name: 1, username: 1 },
-//       (err, user) => {
-//         res.send(user);
-//       }
-//     );
-//   });
+//   );
 // });
-
-// send userRegistered
-router.get("/", (req, res) => {
-  let userAuth = req.user.username;
-  User.find(
-    { username: { $ne: userAuth } },
-    { _id: 0, name: 1, username: 1 },
-    (err, user) => {
-      res.send(user);
-    }
-  );
-});
+//
 
 // get users by search
 router.post("/getUsers", (req, res) => {

@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from "react";
-import Message from "./message/Message";
+
 import FriendList from "./FriendList/FriendList";
 import { Redirect } from "react-router-dom";
 
 import axios from "axios";
 
-class Main extends Component {
+class uthURLuser extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,7 +33,6 @@ class Main extends Component {
           {this.state.isAuthenticated ? (
             <div className="flex-main">
               <FriendList usernameSelected={this.props.match.params.username} />
-              <Message usernameSelected={this.props.match.params.username} />
             </div>
           ) : (
             <Redirect to="/Login" />
@@ -44,4 +43,4 @@ class Main extends Component {
   }
 }
 
-export default Main;
+export default uthURLuser;

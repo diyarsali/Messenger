@@ -19,7 +19,7 @@ class FriendList extends Component {
   }
 
   componentWillMount() {
-    axios.get("/users").then(res => {
+    axios.get("/friend/friends").then(res => {
       this.setState({ users: res.data });
     });
     axios.get("/message/getLatestMessage").then(res => {
@@ -43,7 +43,7 @@ class FriendList extends Component {
     this.setState({ inputValue: event.target.value }, () => {
       let inputValue = this.state.inputValue;
       if (inputValue === "") {
-        axios.get("/users").then(res => {
+        axios.get("/friend/friends").then(res => {
           this.setState({ users: res.data });
           console.log(inputValue);
         });

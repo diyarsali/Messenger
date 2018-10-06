@@ -4,13 +4,16 @@ const User = require("../models/user");
 const Message = require("../models/message");
 const Friend = require("../models/friend");
 
-// send userRegistered
 router.get("/getPeople", (req, res) => {
   let userAuth = req.user.username;
-  Friend.findOne({ user: userAuth }, { _id: 0, friends: 1 }, (err, friends) => {
-    if (friends) {
+  Friend.find({ friends: userAuth }, { _id: 0 }, (err, users) => {
+    if (users) {
+      let userFriended = [];
+      for (let i = 0; i < users.length; i++) {
+        userFriended.push(users[i].user);
+      }
       User.find(
-        { username: { $ne: userAuth, $nin: friends.friends } },
+        { username: { $ne: userAuth, $nin: userFriended } },
         { _id: 0, name: 1, username: 1 },
         (err, user) => {
           res.send(user);
@@ -24,6 +27,36 @@ router.get("/getPeople", (req, res) => {
           res.send(user);
         }
       );
+    }
+  });
+});
+
+// send friend list
+router.get("/friends", (req, res) => {
+  let userAuth = req.user.username;
+  Friend.findOne({ user: userAuth }, { _id: 0, friends: 1 }, (err, friends) => {
+    User.find(
+      {
+        username: { $ne: userAuth },
+        username: friends.friends
+      },
+      { _id: 0, name: 1, username: 1 },
+      (err, user) => {
+        res.send(user);
+      }
+    );
+  });
+});
+// when user type user that not friend with user
+router.post("/findUserINURL", (req, res) => {
+  let Params = req.body.receiverUsername;
+  let authUser = req.user.username;
+  Friend.findOne({ friends: Params, user: authUser }, (err, friends) => {
+    if (friends) {
+      res.send(false);
+      console.log(friends.friends);
+    } else {
+      res.send(true);
     }
   });
 });

@@ -25,10 +25,11 @@ router.post("/send", (req, res) => {
   });
 });
 
+// get latest Message for append to messegs
 router.post("/latestMessage", (req, res) => {
   let Params = req.body.receiverUsername;
   let SelfUser = req.user.username;
-  // let SelfUser = ;
+
   Message.find(
     {
       $or: [
@@ -45,12 +46,14 @@ router.post("/latestMessage", (req, res) => {
         messageArray[i].message = cryptr.decrypt(messageArray[i].message);
       }
       res.send(messageArray);
+      console.log(messageArray);
     }
   )
     .sort({ date: -1 })
     .limit(1);
 });
 
+// get all messages
 router.post("/getMessage", (req, res) => {
   let Params = req.body.receiverUsername;
   let SelfUser = req.user.username;
@@ -65,7 +68,6 @@ router.post("/getMessage", (req, res) => {
       if (err) {
         console.log("faile getting message from db");
       }
-
       let messageArray = message;
       if (messageArray.length != 0) {
         for (let i = 0; i < messageArray.length; i++) {
@@ -83,22 +85,51 @@ router.get("/getUsername", (req, res) => {
   res.send(senderUsername);
 });
 
+// latest messages for appending to friend card
 router.get("/getLatestMessage", (req, res) => {
   let SelfUser = req.user.username;
-  Message.find(
-    { $or: [{ senderUsername: SelfUser }, { receiverUsername: SelfUser }] },
-    { _id: 0, date: 0 },
-    (err, messages) => {
-      let messageArray = messages;
-      for (let i = 0; i < messageArray.length; i++) {
-        messageArray[i].message = cryptr.decrypt(messageArray[i].message);
-      }
-      res.send(messageArray);
+  Friend.findOne({ user: SelfUser }, { _id: 0, friends: 1 }, (err, friends) => {
+    if (friends) {
+      Message.find(
+        {
+          $or: [
+            { senderUsername: SelfUser, receiverUsername: friends.friends },
+            { senderUsername: friends.friends, receiverUsername: SelfUser }
+          ]
+        },
+        { _id: 0, date: 0 },
+        (err, messages) => {
+          let messageArray = messages;
+          for (let i = 0; i < messageArray.length; i++) {
+            messageArray[i].message = cryptr.decrypt(messageArray[i].message);
+          }
+          res.send(messageArray);
+        }
+      ).sort({ date: -1 });
     }
-  ).sort({ date: -1 });
+  });
 });
+// router.get("/getLatestMessage", (req, res) => {
+//   let SelfUser = req.user.username;
+//   Message.find(
+//     {
+//       $or: [
+//         { senderUsername: SelfUser, receiverUsername: friends.friends },
+//         { senderUsername: friends.friends, receiverUsername: SelfUser }
+//       ]
+//     },
+//     { _id: 0, date: 0 },
+//     (err, messages) => {
+//       let messageArray = messages;
+//       for (let i = 0; i < messageArray.length; i++) {
+//         messageArray[i].message = cryptr.decrypt(messageArray[i].message);
+//       }
+//       res.send(messageArray);
+//     }
+//   ).sort({ date: -1 });
+// });
 
-//get newest friend username fro opnening Messanger
+//get newest friend username for opnening Messanger
 router.get("/newestUsername", (req, res) => {
   if (req.user) {
     let SelfUser = req.user.username;
